@@ -15,6 +15,7 @@ class HasRequest(Protocol):
     
     
     
+    
 class URL(Protocol): ...
 
 class BaseHttpManager:

@@ -1,10 +1,12 @@
+# На будущее для интеграции с TG
+
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Optional
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import SQLGenres, SQLHentaiMetadata, convert
+from ...models.sqlentites import SQLGenres, SQLHentaiMetadata, convert
 
 class BaseDBManager(ABC):
     def __init__(

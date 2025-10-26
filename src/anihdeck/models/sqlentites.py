@@ -1,12 +1,13 @@
 import json
 
 from typing import Optional, List, Dict
+from dataclasses import dataclass
 
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, ForeignKey
 
-from dataclasses import dataclass
+
 
 class Base(DeclarativeBase):
     ...

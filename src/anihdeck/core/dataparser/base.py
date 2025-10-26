@@ -3,7 +3,7 @@ import json
 from typing import List, Dict, Iterable, IO
 
 from ..errors import IncorrectData
-from models.entites import TxtData
+from ...models.entites import TxtData
 
 class M3U8Parser:
     def loads(self, s: str | bytes | bytearray | IO[str] | IO[bytes]) -> List[TxtData]:

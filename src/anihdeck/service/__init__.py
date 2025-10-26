@@ -6,9 +6,9 @@ __all__ = [
 from pathlib import Path
 from typing import LiteralString
 
-from core.hentparser.hentparser import HentaiParser
-from core.dataparser.base import M3U8Parser
-from models.entites import HentaiMetadata
+from ..core.hentparser.hentparser import HentaiParser
+from ..core.dataparser.base import M3U8Parser
+from ..models.entites import HentaiMetadata
 from .m3u8_manager.manager import M3U8Manager
 from .m3u8_manager.manager import AsyncM3U8Manager
 from .hentai_manager.manager import HentaiManagerFactory

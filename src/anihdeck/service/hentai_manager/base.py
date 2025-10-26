@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Tuple, Union
 
 from ..base import BaseHttpManager
-from models.entites import HentaiMetadata
+from ...models.entites import HentaiMetadata
 
 
 

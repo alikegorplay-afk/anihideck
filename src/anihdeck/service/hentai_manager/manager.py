@@ -1,18 +1,3 @@
-import subprocess
-import sys
-
-from concurrent.futures import ThreadPoolExecutor
-from tempfile import TemporaryDirectory
-from pathlib import Path
-from hashlib import sha256
-
-from loguru import logger
-
-from core.hentparser.hentparser import BaseHentaiParser
-from core.dataparser.base import M3U8Parser
-from ..m3u8_manager.manager import BaseM3U8Manager
-from .base import BaseHentaiManager
-
 import asyncio
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
@@ -21,13 +6,13 @@ from pathlib import Path
 from hashlib import sha256
 from typing import List, Tuple, Any, Union
 
-import aiohttp
 import aiofiles
 from loguru import logger
 
-from models.entites import HentaiMetadata
-from core.hentparser.hentparser import BaseHentaiParser
-from core.dataparser.base import M3U8Parser
+from ..base import HasRequest
+from ...models.entites import HentaiMetadata
+from ...core.hentparser.hentparser import BaseHentaiParser
+from ...core.dataparser.base import M3U8Parser
 from ..m3u8_manager.manager import BaseM3U8Manager
 from .base import BaseHentaiManager
 
@@ -218,7 +203,7 @@ class AsyncHentaiManager(BaseHentaiManager):
     
     def __init__(
         self, 
-        session: aiohttp.ClientSession,
+        session: HasRequest,
         parser: BaseHentaiParser,
         m3u8_manager: BaseM3U8Manager,
         m3u8_parser: M3U8Parser
@@ -452,7 +437,7 @@ class HentaiManagerFactory:
     
     @staticmethod
     def create_async_manager(
-        session: aiohttp.ClientSession,
+        session: HasRequest,
         parser: BaseHentaiParser,
         m3u8_manager: BaseM3U8Manager,
         m3u8_parser: M3U8Parser

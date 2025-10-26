@@ -4,7 +4,7 @@ from typing import Any, Optional
 from bs4 import BeautifulSoup, _IncomingMarkup
 
 from ..base import BaseParser
-from models.entites import HentaiMetadata
+from ...models.entites import HentaiMetadata
 
 class BaseHentaiParser(BaseParser, ABC):
     TXT_PATTERN = r'Playerjs\(\{id:"([^"]+)",\s*file:"([^"]+)"\}\)'
