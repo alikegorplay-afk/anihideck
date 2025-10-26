@@ -18,7 +18,12 @@ pip install git+https://github.com/alikegorplay-afk/anihideck.git
 pip install requirements.txt
 ```
 
-3. **Использовать:**
+3. **Установить любой HTTP клент**
+   ```cmd
+   pip install requests # Но можно и httpx, aiohttp, urlib3...
+   ```
+
+5. **Использовать:**
 ```python
 from anihdeck import AniHideck
 from requests import Session
