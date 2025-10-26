@@ -3,11 +3,21 @@ import asyncio
 #from httpx import Client, AsyncClient
 from requests import session
 #from aiohttp import ClientSession
+#from niquests import Session
+#import urllib3
 
 from src.anihdeck import AniHideck, AsyncAniHideck
 
 BASE_URL = "https://anihidecq.org"
 URL = 'https://anihidecq.org/1371-uchi-no-otouto-maji-de-dekain-dakedo-mi-ni-konai.html'
+
+#api = AniHideck(BASE_URL, urllib3.PoolManager())
+#result = api.get_info(URL)
+#print(result.id)
+
+#api = AniHideck(BASE_URL, Session())
+#result = api.get_info(URL)
+#print(result.id)
 
 #api = AniHideck(BASE_URL, Client())
 #result = api.get_info(URL)

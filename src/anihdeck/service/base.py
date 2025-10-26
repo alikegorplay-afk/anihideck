@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 
 from loguru import logger
 
+from ..core.errors import HTTPError
+
 class Response(Protocol):
     content: bytes
     text: str
@@ -29,13 +31,45 @@ class BaseHttpManager:
         
         self._session = session
     
+    def raise_for_response(self, response: Response):
+        if hasattr(response, 'raise_for_status'):
+            response.raise_for_status()
+            return 
+        
+        elif hasattr(response, 'status_code'):
+            status: int = response.status_code
+            
+        elif hasattr(response, 'status'):
+            status: int = response.status
+        
+        else:
+            raise AttributeError(f"Неподдерживаемый тип: {type(response).__name__}")
+
+        if 200 <= status < 300:
+            return
+        
+        raise HTTPError(f"Неожиданный код ответа: {status}")
+    
     def _sync_get(self, url: str | URL, headers: dict[str, str] = {'referer': 'https://anihidecq.org/'}) -> str:
         response = self._session.request(method = "GET", url = url, headers = headers)
-        response.raise_for_status()
         
-        return response.text
+        self.raise_for_response(response)
+        try:
+            return response.text
+        except AttributeError:
+            return response.data.decode()
     
-    
+    def _sync_get_content(self, url: str | URL, headers: dict[str, str] = {'referer': 'https://anihidecq.org/'}) -> str:
+        response = self._session.request(method = "GET", url = url, headers = headers)
+            
+        self.raise_for_response(response)
+        try:
+            return response.content
+        except AttributeError:
+            try:
+                return response.data
+            except AttributeError:
+                return response.read()
     
     async def _async_get(self, url: str | URL, headers: dict[str, str] = {'referer': 'https://anihidecq.org/'}) -> str:
         is_httpx = hasattr(self._session, '__class__') and 'httpx' in str(self._session.__class__)
@@ -43,12 +77,12 @@ class BaseHttpManager:
             if is_httpx:
                 raise TypeError()
             async with self._session.request(method="GET", url=url, headers=headers) as response:
-                response.raise_for_status()
+                self.raise_for_response(response)
                 return await response.text()
             
         except (AttributeError, TypeError):
             response = await self._session.request(method="GET", url=url, headers=headers)
-            response.raise_for_status()
+            self.raise_for_response(response)
             return response.text
         
     async def _async_get_content(self, url: str | URL, headers: dict[str, str] = {'referer': 'https://anihidecq.org/'}) -> bytes:
@@ -63,14 +97,16 @@ class BaseHttpManager:
         except (AttributeError, TypeError):
             response = await self._session.request(method="GET", url=url, headers=headers)
             response.raise_for_status()
-            return response.content
+            try:
+                return response.content
+            except AttributeError:
+                return await response.read()
         
     def _parse_m3u8_content(self, base_url: str | URL, content: str) -> List[str]:
         result = []
         
         for line in content.splitlines():
             line = line.strip()
-            # Пропускаем пустые строки и комментарии
             if not line or line.startswith('#'):
                 continue
                 

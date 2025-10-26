@@ -71,7 +71,8 @@ class AniHideck:
         path_to_save: str | Path,
         txt_url: str,
         quality: LiteralString = "default",
-        max_workers: int = 5
+        max_workers: int = 5,
+        ffmpeg: str = "ffmpeg"
     ) -> None:
         """
         Загружает хентай по указанному URL в заданное качество.
@@ -83,12 +84,14 @@ class AniHideck:
                                              По умолчанию "default"
             max_workers (int, optional): Максимальное количество потоков для 
                                        параллельной загрузки. По умолчанию 5
+            ffmpeg (str | Path): Путь/Команда для работы с ffpmeg
         """
         self._manager.download_hentai(
-            path_to_save = path_to_save,
-            txt_url = txt_url,
-            quality = quality,
-            max_workers = max_workers
+            path_to_save,
+            txt_url,
+            quality,
+            max_workers,
+            ffmpeg=ffmpeg
         )
         
 class AsyncAniHideck:

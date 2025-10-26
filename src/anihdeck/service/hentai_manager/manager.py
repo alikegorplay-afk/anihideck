@@ -114,9 +114,9 @@ class SyncHentaiManager(BaseHentaiManager):
             path: Путь для сохранения
         """
         logger.info(f"Скачивание чанка: {path.name}")
-        response = self._session.request(method="GET", url=url)
         with open(path, 'wb') as f:
-            f.write(response.content)
+            f.write(self._sync_get_content(url))
+            
         logger.success(f"Успешно скачан чанк: {path.name}")
     
     def _concat_videos(self, txts: List[Tuple[str, Path]], output_dir: Path, ffmpeg: str | Path) -> None:
