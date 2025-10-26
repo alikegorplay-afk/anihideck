@@ -3,17 +3,17 @@
 Парсер для работы с сайтом [animehidecq](https://animehidecq.org). Предоставляет минимальный необходимый функционал для работы с сайтом (`get_info`, `download_hentai`). В будущем планируется интеграция с Telegram Bot.
 
 ## Преимущества:
-- **Универсальность** - поддержка асинхронной и синхронной версий
-- **Поддерживаемость** - чистый и структурированный код
-- **Гибкость** - поддержка aiohttp, httpx, requests
+- **Универсальность** — поддержка асинхронной и синхронной версий.
+- **Поддерживаемость** — чистый и структурированный код.
+- **Гибкость** — поддержка aiohttp, httpx, requests, urlib3 и тп.
 
 ## Быстрый старт:
-1. **Устоновить репозиторй:**
+1. **Установить репозиторий:**
 ```cmd
 pip install git+https://github.com/alikegorplay-afk/anihideck.git
 ```
 
-2. **Устоновить необходимости:**
+2. **Установить необходимости:**
 ```cmd
 pip install requirements.txt
 ```
@@ -28,3 +28,4 @@ URL = 'https://animehidecq.org/1371-uchi-no-otouto-maji-de-dekain-dakedo-mi-ni-k
 
 api = AniHideck(BASE_URL, Session())
 result = api.get_info(URL)
+```
