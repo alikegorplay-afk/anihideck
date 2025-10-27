@@ -182,7 +182,7 @@ class SyncHentaiManager(BaseHentaiManager):
                     txt = tmpdir / f"{title}.txt"
                     txts.append((title, txt))
                     
-                    with open(txt, 'w') as file:
+                    with open(txt, 'w', encoding='utf-8') as file:
                         for url in segment_urls:
                             ts_filename = sha256(url.encode()).hexdigest() + Path(url).name
                             ts_path = tmpdir / ts_filename
@@ -339,7 +339,7 @@ class AsyncHentaiManager(BaseHentaiManager):
                 chunk_tasks.append(download_with_semaphore(url, ts_path))
             
             # Создаем файл со списком чанков
-            async with aiofiles.open(txt, 'w') as file:
+            async with aiofiles.open(txt, 'w', encoding='utf-8') as file:
                 for url in segment_urls:
                     ts_filename = sha256(url.encode()).hexdigest() + Path(url).name
                     ts_path = tmpdir / ts_filename
@@ -359,6 +359,8 @@ class AsyncHentaiManager(BaseHentaiManager):
             txts: Список кортежей (название, путь к файлу со списком чанков)
             output_dir: Директория для сохранения результатов
         """
+        if not txts:
+            return 
         tasks = []
         for title, txt in txts:
             output_path = output_dir / f"{title}.mp4"
@@ -366,18 +368,16 @@ class AsyncHentaiManager(BaseHentaiManager):
                 "C:/ffmpeg/bin/ffmpeg.exe",
                 "-f", "concat",
                 "-safe", "0",
-                "-i", str(txt),
+                "-i", str(txt), 
                 "-c", "copy",
                 "-y",
                 str(output_path),
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
+                stdout=asyncio.subprocess.DEVNULL,  # Игнорируем вывод
+                stderr=asyncio.subprocess.DEVNULL
             )
-            tasks.append(process)
-        
-        # Ожидаем завершения всех процессов ffmpeg
-        for process in tasks:
-            await process.wait()
+            tasks.append(process.wait())  # Ждем завершения каждого процесса
+        # Запускаем все задачи параллельно
+        await asyncio.gather(*tasks)
     
     async def download_hentai(
         self, 
