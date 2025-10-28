@@ -1,5 +1,5 @@
 __all__ = [
-    "M3U8Parser"
+    "M3U8Parser",
     "HentaiParser", 
     "BaseHentaiParser"
 ]
